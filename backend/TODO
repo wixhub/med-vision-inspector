@@ -1,0 +1,97 @@
+# Setting up the backend
+
+## 1: Create and Navigate to the Project Directory
+
+```bash
+mkdir med-vision-inspector
+cd med-vision-inspector
+```
+
+## 2: Create Folder Structure
+
+Set up the internal folder hierarchy for the FastAPI backend:
+
+```bash
+mkdir -p backend/app/api backend/app/core backend/app/models
+```
+
+## 3: Create a .gitignore File
+
+Create a .gitignore file in the root directory to keep unnecessary files (like virtual environments and caches) out of Git:
+
+```bash
+touch .gitignore
+```
+
+(Paste the standard Python/Angular ignore rules into this file).
+
+## 4: Create and Activate a Python Virtual Environment
+
+Create an isolated virtual environment inside the project and activate it:
+
+On Windows (PowerShell):
+
+```bash
+python -m venv backend/venv
+.\backend\venv\Scripts\Activate
+```
+
+On macOS / Linux:
+
+```bash
+python3 -m venv backend/venv
+source backend/venv/bin/activate
+```
+
+## 5: Create Dependencies File (requirements.txt)
+
+Create the requirements file inside the backend folder:
+
+```bash
+touch backend/requirements.txt
+```
+
+Add the required packages into backend/requirements.txt:
+
+```text
+fastapi==0.110.0
+uvicorn==0.28.0
+torch==2.2.0
+torchvision==0.17.0
+numpy==1.26.4
+opencv-python==4.9.0.80
+pillow==10.2.0
+python-multipart==0.0.9
+```
+
+## 6: Install Dependencies
+
+Run pip to install all necessary libraries inside a virtual environment:
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+## 7: Create the Main Application File main.py inside backend/app/:
+
+```bash
+touch backend/app/main.py
+```
+
+(Populate main.py with the FastAPI application code we prepared earlier for image processing and heatmap generation).
+
+## 8: Run the Backend Server
+
+Start FastAPI development server with hot-reload enabled:
+
+```bash
+uvicorn backend.app.main:app --reload
+```
+
+or
+
+```bash
+docker-compose up --build
+```
+
+Once running, open the browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to see the interactive Swagger UI and test image inspection endpoint!
