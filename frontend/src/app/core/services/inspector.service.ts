@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Service()
 export class InspectorService {
@@ -8,7 +9,7 @@ export class InspectorService {
   private readonly http = inject(HttpClient);
 
   // Backend API endpoint for Grad-CAM image inspection
-  private readonly apiUrl = 'http://localhost:8000/api/v1/inspect';
+  private readonly apiUrl = `${environment.apiUrl}/api/v1/inspect`;
 
   /**
    * Uploads medical image to FastAPI backend and returns processed heatmap blob.
