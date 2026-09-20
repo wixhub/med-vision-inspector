@@ -1,0 +1,183 @@
+/* ==========================================================================
+   Med Vision Inspector - Global Styles & Design System
+   Modern Angular 22+ (Standalone) Architecture
+   ================ ========================================================== */
+
+/* CSS Variables / Theme Configuration (Dark Theme optimized for medical & scientific UI) */
+:root {
+  /* Colors */
+  --bg-primary: #0f172a; /* Deep slate background */
+  --bg-secondary: #1e293b; /* Card / Panel background */
+  --bg-tertiary: #334155; /* Borders / Hover states */
+
+  --text-primary: #f8fafc; /* Main headers and important text */
+  --text-secondary: #94a3b8; /* Subtitles, labels, descriptions */
+
+  --accent-primary: #38bdf8; /* Scientific cyan / blue accent */
+  --accent-hover: #0ea5e9; /* Interactive hover state */
+  --accent-glow: rgba(56, 189, 248, 0.15);
+
+  --danger: #f43f5e; /* Warnings / Errors / Critical anomalies */
+  --success: #10b981; /* Status OK / Successful inference */
+
+  /* Typography */
+  --font-sans:
+    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Layout & Borders */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --border-subtle: 1px solid var(--bg-tertiary);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+}
+
+/* Reset & Global Box Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Customization for Scientific Dashboards */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Responsive Layout App Shell Structure */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+
+  /* Tablet and Desktop layout adjustment */
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: 60px 1fr;
+    grid-template-areas:
+      'header header'
+      'sidebar main';
+  }
+}
+
+/* Header Component Wrapper */
+.app-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+  background-color: var(--bg-secondary);
+  border-bottom: var(--border-subtle);
+  height: 60px;
+  z-index: 10;
+
+  h1 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Control Panel / Sidebar (Responsive collapse on mobile) */
+.app-sidebar {
+  grid-area: sidebar;
+  background-color: var(--bg-secondary);
+  border-right: var(--border-subtle);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  overflow-y: auto;
+
+  /* Mobile view styling */
+  @media (max-width: 767.98px) {
+    width: 100%;
+    border-right: none;
+    border-bottom: var(--border-subtle);
+  }
+}
+
+/* Main Canvas / Viewer Workspace Area */
+.app-main {
+  grid-area: main;
+  background-color: var(--bg-primary);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    padding: var(--spacing-xl);
+  }
+}
+
+/* Utility Classes for Canvas & Images */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 1 / 1;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: var(--border-subtle);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
