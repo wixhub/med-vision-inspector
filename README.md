@@ -11,28 +11,28 @@ An interactive scientific web application designed for the inspection, processin
 
 ## Tech Stack
 
-- **Frontend:** Angular, Signals, TypeScript, HTML5 Canvas, Tailwind CSS
+- **Frontend:** Angular, Signals, TypeScript, HTML5 Canvas
 - **Backend & AI:** Python, PyTorch, FastAPI / REST API
-- **Tooling:** Vite, Nx Workspace, Docker
+- **Tooling:** Docker, Vite
 
 ```text
 med-vision-inspector/
-├── backend/ # Python / PyTorch / FastAPI (AI model & image processing)
-│ ├── app/
-│ │ ├── api/ # Routes (endpoints for image upload and inference)
-│ │ ├── core/ # Configurations and settings
-│ │ └── models/ # PyTorch model loading and Grad-CAM / heatmap logic
-│ ├── Dockerfile
-│ └── requirements.txt
-├── frontend/ # Angular (Signals) + TypeScript + Canvas
-│ ├── src/
-│ │ ├── app/
-│ │ │ ├── components/ # UI components (image inspector, control panel)
-│ │ │ ├── services/ # Services for communicating with the FastAPI backend
-│ │ │ └── workers/ # Web Workers (optional for heavy client-side computations)
-│ │ └── index.html
-│ ├── package.json
-│ └── angular.json
-├── docker-compose.yml # For running both parts together with a single command
+├── backend/               # Python / PyTorch / FastAPI (AI model & image processing)
+│   ├── app/
+│   │ ├── api/             # Routes (endpoints for image upload and inference)
+│   │ ├── core/            # Configurations and settings
+│   │ └── models/          # PyTorch model loading and Grad-CAM / heatmap logic
+│   ├── Dockerfile
+│   └── requirements.txt
+├── frontend/              # Angular (Signals) + TypeScript + Canvas
+│   ├── src/
+│   │ ├── app/
+│   │ │ ├── features/      # UI components (image inspector, control panel)
+│   │ │ └── core/          # Services for communicating with the FastAPI backend
+│   │ │     └── workers/   # Web Workers (optional for heavy client-side computations)
+│   │ └── styles.scss
+│   ├── package.json
+│   └── angular.json
+├── docker-compose.yml     # For running both parts together with a single command
 └── README.md
 ```
