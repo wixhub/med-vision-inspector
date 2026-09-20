@@ -1,0 +1,16 @@
+<div class="canvas-container">
+  <canvas
+    #imageCanvas
+    (mousedown)="onMouseDown($event)"
+    (mousemove)="onMouseMove($event)"
+    (mouseup)="onMouseUp()"
+    (mouseleave)="onMouseUp()"
+    (wheel)="onWheel($event)"
+  ></canvas>
+
+  <div class="canvas-toolbar">
+    <button class="tool-btn" (click)="resetTransform()" title="Reset View">
+      Reset View ({{ (scale() * 100).toFixed(0) }}%)
+    </button>
+  </div>
+</div>
