@@ -1,0 +1,57 @@
+<!-- Main inspector layout container -->
+<div class="inspector-layout">
+  <!-- Sidebar Control Panel -->
+  <aside class="app-sidebar">
+    <h2>Control Panel</h2>
+    <p class="description">Upload biomedical imagery to generate attention heatmaps.</p>
+
+    <!-- File Upload Dropzone -->
+    <div class="upload-box">
+      <label for="file-upload" class="file-dropzone">
+        @if (state().fileName) {
+          <span class="file-name">Selected: {{ state().fileName }}</span>
+        } @else {
+          <span>Choose or drop medical image</span>
+        }
+      </label>
+      <input
+        id="file-upload"
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        hidden
+      />
+    </div>
+
+    <!-- AI Inference Action Button -->
+    <button
+      class="btn-primary"
+      [disabled]="!state().selectedFile || state().isLoading"
+      (click)="processImage()"
+    >
+      @if (state().isLoading) {
+        Processing AI Inference...
+      } @else {
+        Run Grad-CAM Analysis
+      }
+    </button>
+
+    <!-- Error Banner Message -->
+    @if (state().errorMessage) {
+      <div class="error-banner">{{ state().errorMessage }}</div>
+    }
+  </aside>
+
+  <!-- Main Viewer Workspace with Interactive Canvas -->
+  <main class="app-main">
+    <div class="canvas-wrapper">
+      @if (state().resultImageUrl || state().previewUrl) {
+        <app-image-canvas [imageUrl]="state().resultImageUrl || state().previewUrl || ''" />
+      } @else {
+        <div class="empty-state">
+          <p>No image loaded. Please upload a scan to start inspection.</p>
+        </div>
+      }
+    </div>
+  </main>
+</div>
