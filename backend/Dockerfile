@@ -1,12 +1,12 @@
 # Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
-# Set working directory inside the containerВ
+# Set working directory inside the container
 WORKDIR /app
 
-# Install system dependencies required for OpenCV
+# Install system dependencies required for OpenCV (updated for modern Debian)
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
