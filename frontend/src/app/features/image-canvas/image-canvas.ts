@@ -3,6 +3,7 @@ import {
   Component,
   effect,
   ElementRef,
+  HostListener,
   input,
   signal,
   ViewChild,
@@ -17,7 +18,7 @@ import {
 export class ImageCanvas implements AfterViewInit {
   @ViewChild('imageCanvas', { static: true }) private canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  // Modern Angular input signal
+  // Input signal for image URL
   public readonly imageUrl = input<string | null>(null);
 
   private ctx!: CanvasRenderingContext2D;
@@ -46,19 +47,45 @@ export class ImageCanvas implements AfterViewInit {
     this.resizeCanvasToContainer();
   }
 
+  // Automatically resize canvas buffer when window dimensions change
+  @HostListener('window:resize')
+  public onResize(): void {
+    this.resizeCanvasToContainer();
+  }
+
   private resizeCanvasToContainer(): void {
     const canvas = this.canvasRef.nativeElement;
-    canvas.width = canvas.parentElement?.clientWidth || 800;
-    canvas.height = canvas.parentElement?.clientHeight || 800;
+    const parent = canvas.parentElement;
+    if (!parent) return;
+
+    // Match internal canvas resolution to actual DOM container dimensions
+    canvas.width = parent.clientWidth;
+    canvas.height = parent.clientHeight;
     this.redraw();
   }
 
   private loadImage(url: string): void {
     this.image.onload = () => {
-      this.resetTransform();
+      this.fitImageToContainer();
       this.redraw();
     };
     this.image.src = url;
+  }
+
+  // Automatically scale and center the image to fit the container view on load
+  private fitImageToContainer(): void {
+    const canvas = this.canvasRef.nativeElement;
+    if (!this.image.width || !this.image.height) return;
+
+    const scaleX = canvas.width / this.image.width;
+    const scaleY = canvas.height / this.image.height;
+
+    // Choose the smaller scale to fit the whole image inside the viewport with a small margin
+    const initialScale = Math.min(scaleX, scaleY) * 0.85;
+
+    this.scale.set(Math.max(0.1, initialScale));
+    this.panX.set(0);
+    this.panY.set(0);
   }
 
   public redraw(): void {
@@ -81,9 +108,7 @@ export class ImageCanvas implements AfterViewInit {
   }
 
   public resetTransform(): void {
-    this.scale.set(1);
-    this.panX.set(0);
-    this.panY.set(0);
+    this.fitImageToContainer();
     this.redraw();
   }
 
@@ -109,7 +134,7 @@ export class ImageCanvas implements AfterViewInit {
     const zoomFactor = 1.1;
     let newScale = event.deltaY < 0 ? this.scale() * zoomFactor : this.scale() / zoomFactor;
 
-    newScale = Math.max(0.5, Math.min(newScale, 10));
+    newScale = Math.max(0.1, Math.min(newScale, 20));
     this.scale.set(newScale);
     this.redraw();
   }
