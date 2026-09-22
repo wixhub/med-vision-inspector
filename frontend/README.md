@@ -1,4 +1,29 @@
-# MedVisionInspector
+# Med Vision Inspector — Frontend ⚗️🔬
+
+The client-side single-page application for the **Med Vision Inspector** platform. Built with **Angular** (utilizing reactive Signals), **TypeScript**, and **HTML5 Canvas**, it provides a clinical-grade interface for biomedical image inspection and visual AI explanation (Grad-CAM).
+
+## Key Features & Architecture
+
+- **Reactive State Management:** Driven by Angular Signals for predictable, real-time UI synchronization across components.
+
+- **Dynamic Image Source Attribution:** Automatic detection and labeling of active data sources, toggling between public-domain references (Wikimedia Commons CC BY-SA 4.0) for default scans and custom local uploads.
+
+- **Interaction Locking:** Disables user input and interaction (`pointer-events: none` and loading overlays) during active asynchronous backend inference.
+
+- **Robust Component Testing:** Fully covered by **Vitest** unit tests mocking services, asynchronous `FileReader` workflows, and API responses.
+
+## Project Structure (`src/app/`)
+
+```text
+src/app/
+├── core/
+│   ├── models/            # TypeScript interfaces and type definitions (e.g., InspectorState)
+│   └── services/          # Communication services with FastAPI backend (InspectorService)
+└── features/
+    ├── inspector/         # Main container component managing pipeline logic & state
+    ├── sidebar/           # Control panel, attribution display, and action buttons
+    └── image-canvas/      # Canvas rendering pipeline for original scans and attention heatmaps
+```
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.6.
 
