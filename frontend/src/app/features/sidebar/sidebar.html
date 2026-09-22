@@ -1,0 +1,118 @@
+<aside class="app-sidebar">
+  <div class="sidebar-header">
+    <div class="brand-wrapper">
+      <div class="pulse-dot"></div>
+      <h2>Neural Inspector</h2>
+    </div>
+    <span class="badge-research">ResNet18 • Grad-CAM</span>
+  </div>
+
+  <p class="description">
+    Advanced biomedical imagery attention mapping for explainable AI (XAI) diagnostics
+  </p>
+
+  <!-- File Upload Dropzone -->
+  <div class="upload-section" [class.is-loading]="state().isLoading">
+    <label for="file-upload" class="file-dropzone" [class.active]="state().selectedFile">
+      <div class="dropzone-content">
+        <svg
+          class="upload-icon"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="17 8 12 3 7 8" />
+          <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+        @if (state().fileName) {
+          <span class="file-name"><strong>Active:</strong> {{ state().fileName }}</span>
+        } @else {
+          <span>Drop medical scan or <em>browse</em></span>
+        }
+      </div>
+    </label>
+    <input
+      id="file-upload"
+      type="file"
+      accept="image/*"
+      [disabled]="state().isLoading"
+      (change)="onFileSelected($event)"
+      hidden
+    />
+  </div>
+
+  <!-- Dynamic Image Source Attribution -->
+  <div class="source-attribution">
+    <span class="source-label">Active Image Source:</span>
+    @if (
+      state().fileName &&
+      !state().fileName.includes('Default') &&
+      !state().fileName.includes('MRI_Brain')
+    ) {
+      <span class="source-value user-file">Custom Local Upload</span>
+    } @else {
+      <a
+        href="https://commons.wikimedia.org/wiki/File:MRI_Brain_T1_Sag_(9).jpg"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="source-link"
+      >
+        Wikimedia Commons (CC BY-SA 4.0)
+      </a>
+    }
+    <span class="source-meta-detail">
+      @if (state().isLoading) {
+        Status: Computing Grad-CAM...
+      } @else if (state().resultImageUrl) {
+        Status: Analysis Complete
+      } @else {
+        Status: Ready for Grad-CAM
+      }
+    </span>
+  </div>
+
+  <!-- AI Inference Action Button -->
+  <button
+    class="btn-primary"
+    [disabled]="!state().selectedFile || state().isLoading"
+    (click)="processImage.emit()"
+  >
+    @if (state().isLoading) {
+      <span class="spinner"></span>
+      Computing Attention...
+    } @else {
+      Run Grad-CAM Analysis
+    }
+  </button>
+
+  <!-- Academic Metrics & Configuration Panel -->
+  <div class="academic-metrics">
+    <div class="metric-row">
+      <span class="metric-label">Target Architecture</span>
+      <span class="metric-value">ResNet18 (ImageNet)</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Target Layer</span>
+      <span class="metric-value">layer4[-1]</span>
+    </div>
+    <div class="metric-row">
+      <span class="metric-label">Backend Engine</span>
+      <span class="metric-value text-accent">PyTorch / FastAPI</span>
+    </div>
+    @if (state().confidence !== null) {
+      <div class="metric-row highlight">
+        <span class="metric-label">Confidence Score</span>
+        <span class="metric-value score">{{ state().confidence! * 100 | number: '1.1-1' }}%</span>
+      </div>
+    }
+  </div>
+
+  <!-- Error Banner Message -->
+  @if (state().errorMessage) {
+    <div class="error-banner">{{ state().errorMessage }}</div>
+  }
+</aside>
