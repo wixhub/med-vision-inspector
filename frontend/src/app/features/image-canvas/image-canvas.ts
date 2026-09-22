@@ -80,8 +80,8 @@ export class ImageCanvas implements AfterViewInit {
     const scaleX = canvas.width / this.image.width;
     const scaleY = canvas.height / this.image.height;
 
-    // Choose the smaller scale to fit the whole image inside the viewport with a small margin
-    const initialScale = Math.min(scaleX, scaleY) * 0.85;
+    // Use full min scale so the image stretches to the maximum possible container bounds
+    const initialScale = Math.min(scaleX, scaleY);
 
     this.scale.set(Math.max(0.1, initialScale));
     this.panX.set(0);
