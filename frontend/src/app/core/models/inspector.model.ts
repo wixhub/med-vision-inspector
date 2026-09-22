@@ -10,4 +10,5 @@ export interface InspectorState {
   resultImageUrl: string | null;
   isLoading: boolean;
   errorMessage: string | null;
+  confidence: number | null; // Model confidence score (0 to 1)
 }
