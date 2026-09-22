@@ -36,6 +36,24 @@
       }
     </button>
 
+    <!-- Model Confidence Metrics Block -->
+    @if (state().confidence !== null) {
+      <div
+        class="metrics-card"
+        style="
+          margin-top: 16px;
+          padding: 12px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 8px;
+        "
+      >
+        <span style="font-size: 12px; color: #94a3b8; display: block">AI Confidence Score</span>
+        <span style="font-size: 18px; font-weight: bold; color: #38bdf8">
+          {{ state().confidence! * 100 | number: '1.1-1' }}%
+        </span>
+      </div>
+    }
+
     <!-- Error Banner Message -->
     @if (state().errorMessage) {
       <div class="error-banner">{{ state().errorMessage }}</div>
