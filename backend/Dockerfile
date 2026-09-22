@@ -14,6 +14,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Pre-download PyTorch ResNet50 weights during the build phase 
+# to prevent runtime timeouts and 502 Bad Gateway errors on Render
+RUN python -c "import torchvision.models as models; models.resnet50(weights=models.ResNet50_Weights.DEFAULT)"
+
 # Copy the rest of the backend application code
 COPY . .
 
