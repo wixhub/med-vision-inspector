@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://med-vision-inspector.onrender.com',
+  apiUrl: 'https://vision-inspector.onrender.com',
 };
