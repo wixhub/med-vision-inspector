@@ -16,8 +16,8 @@ class GradCAMModel:
         # Set up device (GPU if available, otherwise CPU)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        # Load a pre-trained ResNet50 model (can be swapped for medical-specific weights)
-        self.model = models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
+        # Load a pre-trained ResNet18 model to fit within Render's 512MB RAM limit
+        self.model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
         self.model.eval()
         self.model.to(self.device)
         
@@ -35,7 +35,7 @@ class GradCAMModel:
         def backward_hook(module, grad_input, grad_output):
             self.gradient = grad_output[0]
 
-        # Target layer for ResNet50: last block of layer4
+        # Target layer for ResNet18: last block of layer4
         target_layer = self.model.layer4[-1]
         target_layer.register_forward_hook(forward_hook)
         target_layer.register_full_backward_hook(backward_hook)
