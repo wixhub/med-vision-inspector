@@ -1,19 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { InspectorService } from '../../core/services/inspector.service';
 import { InspectorState } from '../../core/models/inspector.model';
 import { ImageCanvas } from '../image-canvas/image-canvas';
+import { Sidebar } from '../sidebar/sidebar';
 
 @Component({
-  imports: [ImageCanvas, DecimalPipe],
+  imports: [ImageCanvas, Sidebar],
   selector: 'app-inspector',
   styleUrl: './inspector.scss',
   templateUrl: './inspector.html',
 })
-export class Inspector {
+export class Inspector implements OnInit {
   private readonly inspectorService = inject(InspectorService);
 
-  // Reactive state using Signals typed with InspectorState interface
+  // Reactive component state managed via Angular Signals
   public readonly state = signal<InspectorState>({
     selectedFile: null,
     fileName: '',
@@ -25,7 +25,46 @@ export class Inspector {
   });
 
   /**
-   * Handles local file selection and generates a local preview URL.
+   * Lifecycle hook: automatically load the default Wikimedia T1 Brain MRI demo scan on startup.
+   */
+  public ngOnInit(): void {
+    this.loadDefaultDemoImage();
+  }
+
+  /**
+   * Fetches the local public-domain Brain MRI sample for instant academic demonstration.
+   */
+  private async loadDefaultDemoImage(): Promise<void> {
+    const demoImageUrl = 'img/MRI_Brain_T1_Sag_(9).jpg';
+
+    try {
+      this.state.update((curr) => ({ ...curr, isLoading: true }));
+      const response = await fetch(demoImageUrl);
+      const blob = await response.blob();
+      const file = new File([blob], 'MRI_Brain_T1_Sag_(9).jpg', { type: 'image/jpeg' });
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.state.update((curr) => ({
+          ...curr,
+          selectedFile: file,
+          fileName: '', // Оставляем пустым, чтобы боковая панель показала академическую ссылку на Wikimedia
+          previewUrl: reader.result as string,
+          isLoading: false,
+        }));
+
+        // Automatically trigger AI inference pipeline for instant demo feedback
+        this.processImage();
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.warn('Failed to load default demo asset:', error);
+      this.state.update((curr) => ({ ...curr, isLoading: false }));
+    }
+  }
+
+  /**
+   * Handles local user file selections through the dropzone input.
    */
   public onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -37,7 +76,7 @@ export class Inspector {
         this.state.update((curr) => ({
           ...curr,
           selectedFile: file,
-          fileName: file.name,
+          fileName: file.name, // При пользовательском файле здесь появится имя файла
           previewUrl: reader.result as string,
           resultImageUrl: null,
           errorMessage: null,
@@ -49,7 +88,7 @@ export class Inspector {
   }
 
   /**
-   * Triggers the backend AI inference pipeline.
+   * Triggers the backend AI inference pipeline and updates heatmap states.
    */
   public processImage(): void {
     const file = this.state().selectedFile;
@@ -68,7 +107,7 @@ export class Inspector {
         }));
       },
       error: (err) => {
-        console.error('Inference error:', err);
+        console.error('Backend inference pipeline error:', err);
         this.state.update((curr) => ({
           ...curr,
           errorMessage: 'Failed to process image through backend inference pipeline.',
