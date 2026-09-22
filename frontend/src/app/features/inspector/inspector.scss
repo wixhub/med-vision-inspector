@@ -102,6 +102,33 @@
   }
 }
 
+/* Metrics Card for AI Confidence Score */
+.metrics-card {
+  background-color: var(--bg-primary);
+  border: var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  .metric-title {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .metric-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+  }
+}
+
 /* Error Banner */
 .error-banner {
   background-color: rgba(244, 63, 94, 0.1);

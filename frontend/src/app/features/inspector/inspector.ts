@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { InspectorService } from '../../core/services/inspector.service';
 import { InspectorState } from '../../core/models/inspector.model';
 import { ImageCanvas } from '../image-canvas/image-canvas';
 
 @Component({
-  imports: [ImageCanvas],
+  imports: [ImageCanvas, DecimalPipe],
   selector: 'app-inspector',
   styleUrl: './inspector.scss',
   templateUrl: './inspector.html',
@@ -20,6 +21,7 @@ export class Inspector {
     resultImageUrl: null,
     isLoading: false,
     errorMessage: null,
+    confidence: null,
   });
 
   /**
@@ -39,6 +41,7 @@ export class Inspector {
           previewUrl: reader.result as string,
           resultImageUrl: null,
           errorMessage: null,
+          confidence: null,
         }));
       };
       reader.readAsDataURL(file);
@@ -55,11 +58,12 @@ export class Inspector {
     this.state.update((curr) => ({ ...curr, isLoading: true, errorMessage: null }));
 
     this.inspectorService.inspectImage(file).subscribe({
-      next: (blob) => {
+      next: ({ blob, confidence }) => {
         const objectUrl = URL.createObjectURL(blob);
         this.state.update((curr) => ({
           ...curr,
           resultImageUrl: objectUrl,
+          confidence: confidence,
           isLoading: false,
         }));
       },
