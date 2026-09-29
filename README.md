@@ -1,12 +1,12 @@
 # Med Vision Inspector ⚗️🔬
 
-An interactive scientific web application designed for the inspection, processing, and visual explanation of biomedical and medical imaging data. Built as part of a research portfolio bridging computer vision, model interpretability (Explainable AI), and high-performance frontend architectures.
+An interactive scientific web application designed for the inspection, processing and visual explanation of biomedical and medical imaging data, bridging computer vision, model interpretability (Explainable AI) and high-performance frontend architectures
 
 ## Key Features
 
 - **Visual AI Explanation:** Overlays model attention masks and heatmaps (Grad-CAM style) directly onto medical images to interpret neural network decisions.
 
-- **High-Performance Rendering:** Utilizes HTML5 Canvas and WebGL pipelines for smooth real-time manipulation, zooming, and threshold adjustments of high-resolution imagery.
+- **High-Performance Rendering:** Utilizes HTML5 Canvas and WebGL pipelines for smooth real-time manipulation, zooming and threshold adjustments of high-resolution imagery.
 
 - **Modern Frontend Architecture:** Developed using Angular (Signals) within an enterprise-grade standalone structure, ensuring reactive, predictable state management.
 
