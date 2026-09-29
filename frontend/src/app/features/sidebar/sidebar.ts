@@ -1,9 +1,10 @@
 import { Component, input, output } from '@angular/core';
 import { InspectorState } from '../../core/models/inspector.model';
 import { DecimalPipe } from '@angular/common';
+import { Footer } from '../../core/layout/footer/footer';
 
 @Component({
-  imports: [DecimalPipe],
+  imports: [DecimalPipe, Footer],
   selector: 'app-sidebar',
   styleUrl: './sidebar.scss',
   templateUrl: './sidebar.html',
